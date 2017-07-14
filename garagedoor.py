@@ -7,7 +7,7 @@ from PyQt5.QtWidgets import QApplication, QWidget, QPushButton
 from PyQt5.QtCore import QCoreApplication
 from PyQt5.QtGui import QIcon
 
-HOST, PORT = "localhost", 31415 
+HOST, PORT = "192.168.2.100", 31415 
 #sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 class Example(QWidget):
@@ -15,6 +15,7 @@ class Example(QWidget):
     def lift(self):
         try:
             sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            print("Trying to connect to " + HOST)
             sock.connect((HOST,PORT))
             sock.sendall("click".encode())
             recieved = sock.recv(1024).decode()
