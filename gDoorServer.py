@@ -51,3 +51,6 @@ if __name__ == "__main__":
     # interrupt the program with Ctrl-C
     server.serve_forever()
     print("Starting server")
+    for x in range(0,9):
+        print(x)
+    
