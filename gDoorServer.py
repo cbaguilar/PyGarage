@@ -3,6 +3,9 @@ import time
 import _thread
 
 LIB = False
+LOCKED = False
+
+
 
 try:
     import RPi.GPIO as gp
@@ -24,6 +27,7 @@ def checkDoor():
         time.sleep(1)
         if LIB:
             if gp.input(22):
+                LOCKED = True
                 print("Checking door...")
                 if gp.input(18):
                     print("Door open, waiting 60 seconds for close")
@@ -37,7 +41,9 @@ def checkDoor():
                 else:
                     print("Door closed.")
             else:
-                print("Door Locked")
+                if LOCKED == False:
+                    print("Door Locked")
+                    LOCKED = True
         else:
                 print("Simulating door check...")
                 time.sleep(20)
