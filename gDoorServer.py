@@ -1,5 +1,6 @@
 import socketserver
 import time
+import _thread
 
 LIB = False
 
@@ -10,9 +11,35 @@ try:
     gp.setmode(gp.BOARD)
     gp.setup(16,gp.OUT)
     gp.output(16,1)
+    
+    gp.setup(18,gp.IN, pull_up_down=gp.PUD_UP)
+    gp.setup(22,gp.IN, pull_up_down=gp.PUD_UP)
 except Exception:
     LIB = False
     print("Could not load GPIO library")
+
+def checkDoor():
+  while True:
+    print("Starting door check...")
+    time.sleep(1)
+    if LIB:
+      if gp.input(22):
+        print("Checking door...")
+        if gp.input(18):
+            print("Door open, waiting 60 seconds for close")
+            time.sleep(60)
+            if gp.input(18):
+                print("Door still open, activating lift")
+                lift()
+            else:
+                print("Door shut, probably by driver")
+      
+        else:
+            print("Door closed.")
+    else:
+            print("Simulating door check...")
+            time.sleep(20)
+    
 
 def lift():
     print("Lifting...")
@@ -49,5 +76,8 @@ if __name__ == "__main__":
 
     # Activate the server; this will keep running until you
     # interrupt the program with Ctrl-C
+    _thread.start_new_thread(checkDoor,())
     server.serve_forever()
     print("Starting server")
+    for x in range (0,9):
+        print(x)
