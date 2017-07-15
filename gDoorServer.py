@@ -23,7 +23,7 @@ except Exception:
 
 def checkDoor():
     while True:
-        print("Starting door check...")
+        #print("Starting door check...")
         time.sleep(1)
         if LIB:
             if gp.input(22):
