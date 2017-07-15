@@ -43,7 +43,7 @@ def checkDoor():
             else:
                 if LOCKED == False:
                     print("Door Locked")
-                    global LOCKED; LOCKED = True
+                global LOCKED; LOCKED = True
         else:
                 print("Simulating door check...")
                 time.sleep(20)
