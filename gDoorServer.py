@@ -36,6 +36,8 @@ def checkDoor():
               
                 else:
                     print("Door closed.")
+            else:
+                print("Door Locked")
         else:
                 print("Simulating door check...")
                 time.sleep(20)
