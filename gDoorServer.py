@@ -1,9 +1,13 @@
+#!/usr/bin/python3
 import socketserver
 import time
 import _thread
+import subprocess
 
 LIB = False
 LOCKED = False
+
+WAIT_TIME = 240
 
 
 
@@ -50,8 +54,8 @@ def checkDoor():
                 global LOCKED; LOCKED = False
                 print("Checking door...")
                 if doorSens():
-                    print("Door open, waiting 60 seconds for close")
-                    time.sleep(60)
+                    print("Door open, waiting "+str(WAIT_TIME)+" seconds for close")
+                    time.sleep(WAIT_TIME)
                     if doorSens() and lockSens():
                         print("Door still open, activating lift")
                         lift()
@@ -71,6 +75,8 @@ def checkDoor():
     
 
 def lift():
+    for x in range (0,2): subprocess.Popen(['mpg123','-q','alarm.mp3']).wait()
+    time.sleep(3)
     print("Lifting...")
     if LIB:
         gp.output(16,0)
@@ -98,7 +104,7 @@ class MyTCPHandler(socketserver.BaseRequestHandler):
         self.request.sendall(self.data.upper())
 
 if __name__ == "__main__":
-    HOST, PORT = "192.168.2.100", 31415
+    HOST, PORT = "192.168.2.70", 31415
 
     # Create the server, binding to localhost on port 9999
     server = socketserver.TCPServer((HOST, PORT), MyTCPHandler)
